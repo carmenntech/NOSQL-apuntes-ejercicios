@@ -111,6 +111,33 @@ db.movies.find(
 )
 ```
 
+### 🧡 Consultas Documentos Anidados
+
+Ejemplo: Devuelve los documentos de la colección clientes que tengan el par provincia:Madrid en el documento embebido “dirección”.
+
+```
+db.clientes.find( {"dirección.provincia":"Madrid"})
+```
+
+Ejemplo: Devuelve el documento de la colección clientes que tenga exactamente el array especificado (exactamente los mismos elementos).
+
+```
+db.clientes.find({"telefonos":["914556677","677445566"]})
+```
+
+El operador __$all__ busca todos aquellos documentos donde el valor del campo contiene todos los elementos, independientemente de su orden o tamaño.
+
+Ejemplo: Buscar todas las películas disponibles en English, French y Cantonese.
+
+```
+db.movies.find(
+    {"languages":{
+        "$all" :[ "English", "French", "Cantonese"]
+    }},
+    {"languages" : 1, "_id": 0})
+```
+
+
 ### 🧡 Otras consultas útiles 
 
 __Condicion LIKE (contine una cadena de caracteres)__
@@ -124,5 +151,14 @@ db.alumnos.find({“nombre": /A./})
 db.clientes.find({"nombre":/.u./}) 
 ```
 
+__Incluir / Excluir campos en la consulta__
+
+1-> Incluir el campo 
+0-> Excluir el campo
+
+```
+db.clientes.find({"nombre":{$eq:"Alfredo"}},{_id:1, ciudad:1})
+db.clientes.find({"nombre":{$eq:"Alfredo"}},{ciudad:0})
+```
 
 

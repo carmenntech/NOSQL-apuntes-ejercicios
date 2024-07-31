@@ -86,15 +86,43 @@ $and : [
 
 | Nombre  | Descripcion |
 | ------------- | ------------- |
-| $eq  | Content Cell  |
-| $gt  | Content Cell  |
-| $gte  | Content Cell  |
-| $lt  | Content Cell  |
-| $lte  | Content Cell  |
-| $ne  | Content Cell  |
-| $in  | Content Cell  |
-| $nin  | Content Cell  |
+| $eq  | Valores iguales a un valor especifico  |
+| $gt  | Valores más altos a un valor especifico  |
+| $gte  | Valores más altos o iguales a un valor especifico  |
+| $lt  | Valores más pequeños a un valor especifico  |
+| $lte  | Valores más pequeños o iguales a un valor especifico  |
+| $ne  | Todos los valores que no son iguales a un valor especifico  |
+| $in  | Alguno de los valores que coincida con los valores especificos del array |
+| $nin  | Ningun valor que coincida con los valores especificos del array  |
 
+Ejemplos:
+
+```
+db.movies.find(
+    {"released" :
+        {$lt : new Date('2000-01-01')}
+    }
+).count()
+
+db.movies.find(
+  {"rated" :
+    {$in : ["G", "PG", "PG-13"]}
+  }
+)
+```
+
+### 🧡 Otras consultas útiles 
+
+__Condicion LIKE (contine una cadena de caracteres)__
+
+/A./ -> Todos los nombres que empiecen por A
+
+/.u./ -> Todos los nombres que contengan la u
+
+```
+db.alumnos.find({“nombre": /A./})
+db.clientes.find({"nombre":/.u./}) 
+```
 
 
 

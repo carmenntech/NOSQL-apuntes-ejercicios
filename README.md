@@ -1,1 +1,6 @@
-"# NoSQL_apuntes-ejercicios" 
+# Apuntes NoSQL
+
+## 1. Consultas de selección 
+
+### 🧡 Consultas básicas
+

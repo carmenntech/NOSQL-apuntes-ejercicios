@@ -1,9 +1,20 @@
+
+![image](https://github.com/user-attachments/assets/09e2063b-d77a-44e1-8195-df9506e7a8e2)
+
+
+
+
+__INDICE__
 - [Apuntes NoSQL](#Apuntes-NoSQL)
   - [1. Consultas de selección](#1-consultas-de-selección)
   - [2. Modificar o insertar documentos](#2-Modificar-o-insertar-documentos)
   - [3. Eliminar documentos](#3-Eliminar-documentos)
   - [4.Data Aggregation (Framework)](#4Data-Aggregation-Framework)
   - [5. Joins en NoSQL](#5-Joins-en-NoSQL)
+ 
+
+
+
 
 # Apuntes NoSQL 
 

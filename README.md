@@ -1,3 +1,8 @@
+- [Apuntes NoSQL](#Apuntes-NoSQL)
+  - [1. Consultas de selección](#1-consultas-de-selección)
+    - [🧡 Consultas básicas](#🧡-Consultas-básicas)
+
+
 # Apuntes NoSQL 
 
 ## 1. Consultas de selección 

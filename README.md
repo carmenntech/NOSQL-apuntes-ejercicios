@@ -180,9 +180,9 @@ db.clientes.find({"nombre":{$eq:"Alfredo"}},{_id:1, ciudad:1})
 db.clientes.find({"nombre":{$eq:"Alfredo"}},{ciudad:0})
 ```
 
-## 2. Modificar documentos
+## 2. Modificar o insertar documentos 
 
-Método __update__ modifica un documento o documentos existentes en una colección
++ Método __update__ modifica un documento o documentos existentes en una colección
 
 ```
 db.alumnos.update (
@@ -192,7 +192,7 @@ db.alumnos.update (
 
 Si el campo “titulación” no existe en el documento, éste se añade, en caso contrario, se actualiza su valor
 
-__Operadores de Update__
++ __Operadores de Update__
 
 | Nombre  | Descripcion |
 | ------------- | ------------- |
@@ -206,9 +206,11 @@ __Operadores de Update__
 | $max  |  Solo actualiza el campo si el valor especifico es mayor que el valor del campo existente  |
 | $currentDate  | Mete la fecha actual como valor de campo  |
 
-__opcion upsert:true__
++ __opcion upsert:true__
 
 Es necesario poner la opción upsert al valor true (por defecto, FALSE). De esta forma se actualizará, si existe, el documento y en caso contrario, se insertará
+
+Actualización o update (si se encuentra) o inserción insert (si no se encuentra), que se abrevia con upsert.
 
 ```
 db.alumnos.update(
@@ -216,6 +218,21 @@ db.alumnos.update(
 { $set: { "mayorEdad": true }, $inc:{“Edad”:1} },
 { upsert: true }
 )
+```
++ __insertar documentos__
+  
+Se puede usar tanto la funcion insert o la funcion insertMany, que toma un array de documentos.
+
+```
+db.new_movies.insert({"_id": 2, "title": "Baby Driver"})
+db.new_movies.insert({"_id": 3, "title" : "Logan"})
+```
+
+```
+db.new_movies.insertMany([
+    {"_id" : 2, "title": "Baby Driver"},
+    {"_id" : 3, "title": "Logan"}
+])
 ```
 
 ## 3. Eliminar documentos

@@ -257,3 +257,146 @@ Tambien para borrar todos los documentos de una coleccion podemos usar
 
 `db.colección.drop ()`
 
+## 4.Data Aggregation (Framework)
+
+La aggregation pipeline le permite definir una serie de etapas que filtran, fusionan y organizan datos con mucho más control que el comando de find estándar.
+
+El elemento clave de la agregación se llama pipeline. Un pipeline es una serie de instrucciones, donde la entrada a cada instrucción es la salida de la anterior.
+
+Aggregate sintaxis
+
+```
+var pipeline = [] // Pipeline es una matriz de etapas.
+var options = {}
+db.movies.aggregate(pipeline, options)
+```
+
+pipeline sintaxis
+
+```
+var pipeline = [
+        { $match: { "location.address.state": "MN"} },
+        { $project: { "location.address.city": 1 } },
+        { $sort: { "location.address.city": 1 } },
+        { $limit: 3 }
+     ];
+```
+![image](https://github.com/user-attachments/assets/62e87e5b-3891-40c7-a333-a51f09c4f805)
+
+### Operadores Aggregation
+
++ __$sample__
+
+Devuelve un conjunto de N documentos de una colección al azar. Ejemplo: Obtener tres provincias al azar:
+
+```
+db.libros.aggregate([{$sample: { provincias: <3>}}])
+```
++ __$match__
+
+Filtra los documentos que cumplen las condiciones, esta etapa conviene ponerla al principio. 
+Ejemplo; filtra los libros por autor 
+
+`db.libros.aggregate( [{$match : {autor : "Cervantes"}}])`
+
++ __$project__
+
+Pasan a la siguiente etapa con los campos especificados. Los campos pueden ser preexistentes o creados en esta etapa.
+
+  - <campo>: <1 o true> -- se incluye el campo (también el _id)
+  - <campo>: <0 o false> -- se excluye (e impide cualquier otro tipo de especificación, salvo       excluir campos, en este caso por defecto sí aparecen)
+  - _id: <0 o false> -- se suprime el _id (por defecto, sí se  incluye)
+  + <campo>: <expresión> -- añade o resetea el valor
+  + <camponuevo>: $<campo> -- para renombrar un campo
+  + En embebidos, “a.b.c” : <1/0/exp> o a:{b:{c: <1/0/exp>}}
+
+ejemplos:
+  
+```
+Devuelve únicamente el Nombre de las provincias y su _id:
+
+db.provincias.aggregate ([{$project:{"Nombre":1}}])
+
+Se renombra el campo Nombre y se excluye el _id:
+
+([{$project:{"Provincia":"$Nombre","_id":0}} ])
+```
+
++ __$sort__
+
+Ordena los documentos. Ejemplo: Devuelve únicamente el Nombre de las provincias y su _id, ordenados ascendentemente por la Superficie de la provincia
+
+`db.provincias.aggregate ([{$sort:{Superficie:1}},
+{$project:{"Nombre":1}}])`
+
+
++ __$limit__
+
+Limita el número de documentos que pasan a la siguiente etapa, sin afectar al contenido
+
+`db.libros.aggregate( { $limit : 5 });`
+
++ __$out__
+
+Escribe la salida a una colección, debe ser la última etapa del pipeline
+
+` $out: "<colección de salida>" }`
+
++ __$group__
+
+La etapa $group le permite agrupar (o agregar) documentos en función de una condición específica.
+
+La implementación básica de la etapa $group acepta solo una clave _id , siendo el valor una expresión. El campo _id es obligatorio.
+
+Esta expresión define los criterios por los cuales la canalización agrupa los documentos.
+
+Este valor se convierte en el _id del documento recién generado con un documento generado para cada _id único que crea la etapa $group.
+
+Al agregar, necesitamos decirle a la canalización que queremos acceder al campo del documento que está agregando actualmente.
+
+![image](https://github.com/user-attachments/assets/07dd04a3-3810-4702-b9d6-2313779946ec)
+
++ __$unwind__
+
+Descompone un documento en tantos documentos como elementos tenga el array.
+
+```
+{"_id": 1, "item": "ABC1", tallas: ["S","M","L"]}
+
+db.inventory.aggregate([{$unwind : "$tallas" }])
+
+{ "_id" : 1, "item" : "ABC1", "tallas" : "S" }
+{ "_id" : 1, "item" : "ABC1", "tallas" : "M" }
+{ "_id" : 1, "item" : "ABC1", "tallas" : "L" }
+```
+
++ __$sortByCount__
+
+Agrupa los documentos y los cuenta por grupos, devolviendo en el resultado el _id correspondiente a la agrupación y un valor con el número de documentos
+
+Es equivalente a $group + $sort
+
+
++ __$addFields__
+
+Añade nuevos campos a documentos, manteniendo los que existen. Es equivalente a un $project que mantenga todos los campos y añada otros nuevos. Si el campo ya existe (incluyendo _id), se
+sobreescribe.
+
++ __$bucket__
+
+Clasifica los documentos en grupos (buckets) 
+
+![image](https://github.com/user-attachments/assets/4ebe8a79-db74-4147-8639-bff78391f2a2)
+
+$bucketAuto
+
+![image](https://github.com/user-attachments/assets/019d96bc-3f2a-4867-9e94-cd3569d8d91d)
+
+## 5. Joins en NoSQL
+
+En MongoDB, los joins de colecciones se realizan mediante el paso de agregación $lookup.
+
+![image](https://github.com/user-attachments/assets/12a34e1c-fd4a-4cdd-9614-15946de0405e)
+
+![image](https://github.com/user-attachments/assets/e35dc559-8c0d-49ef-bf1e-8eb307703f10)
+

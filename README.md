@@ -4,11 +4,11 @@
 
 ### 🧡 Consultas básicas
 
-__Mostrar todos los documentos de una colección__
++ __Mostrar todos los documentos de una colección__
 
 ` db.usuarios.find() `
 
-__Mostrar segun una condición de igualdad__
++ __Mostrar segun una condición de igualdad__
 
 $eq se usa como comparador de igualdad 
 
@@ -16,13 +16,13 @@ $eq se usa como comparador de igualdad
 db.alumnos.find({"author": “Juanito"})
 db.alumnos.find({“autor”:{$eq:”Juanito”}}
 ```
-__Funcion pretty__
++ __Funcion pretty__
 
 Con la función pretty muesta un resultado bien formateado.
 
 ` db.alumnos.find({"author": “Juanito"}).pretty() `
 
-__Funcion distinct__
++ __Funcion distinct__
 
 Usamos distinct para mostrar los valores unicos de un campo. Por ejemplo, para mostrar los usuarios unicos de la coleccion usuarios
 
@@ -30,7 +30,7 @@ Usamos distinct para mostrar los valores unicos de un campo. Por ejemplo, para m
 
 ### 🧡 Operadores logicos
 
-__$and Operator__
++ __$and Operator__
 
 Películas sin clasificación que se lanzaron en 2008:
 
@@ -50,13 +50,13 @@ db.movies.countDocuments (
 )
 ``
 
-__$or Operator__
++ __$or Operator__
 
 ``
 db.alumnos.find ({$or: [{"Edad":{$gte:18}},{"nombre":"Belen"}]})
 ``
 
-__$not Operator__
++ __$not Operator__
 
 Ejemplo: Devuelva todas las películas que no tienen 5 o más comentarios:
 
@@ -68,7 +68,7 @@ db.movies.find(
 )
 ``
 
-__Combinación de varias condiciones__
++ __Combinación de varias condiciones__
 
 Encontrar los títulos y años de estreno de películas de drama o crimen en cuya producción han colaborado Leonardo DiCaprio y Martin Scorsese.
 
@@ -110,6 +110,24 @@ db.movies.find(
   }
 )
 ```
++ __Operador $exists__
+
+Este operador devuelve todos los documentos que tienen o no un determinado campo
+
+```
+db.alumnos.find({“titulación”: {$exists:true}})
+db.alumnos.find({“edad”: {$exists:false}})
+```
+
++ __Operador $type__
+
+Este operador devuelve los documentos cuyo campo sea de un determinado tipo
+
+```
+db.alumnos.find ({“edad”: {$type: “int”}})
+db.pacientes.find({“dirección”: {$type:”string”}})
+```
+
 
 ### 🧡 Consultas Documentos Anidados
 
@@ -140,7 +158,7 @@ db.movies.find(
 
 ### 🧡 Otras consultas útiles 
 
-__Condicion LIKE (contine una cadena de caracteres)__
++ __Condicion LIKE (contine una cadena de caracteres)__
 
 /A./ -> Todos los nombres que empiecen por A
 
@@ -151,9 +169,10 @@ db.alumnos.find({“nombre": /A./})
 db.clientes.find({"nombre":/.u./}) 
 ```
 
-__Incluir / Excluir campos en la consulta__
++ __Incluir / Excluir campos en la consulta__
 
 1-> Incluir el campo 
+
 0-> Excluir el campo
 
 ```
@@ -161,4 +180,63 @@ db.clientes.find({"nombre":{$eq:"Alfredo"}},{_id:1, ciudad:1})
 db.clientes.find({"nombre":{$eq:"Alfredo"}},{ciudad:0})
 ```
 
+## 2. Modificar documentos
+
+Método __update__ modifica un documento o documentos existentes en una colección
+
+```
+db.alumnos.update (
+{"_id": 11},
+{$set : {“titulación" :”GII” }})
+```
+
+Si el campo “titulación” no existe en el documento, éste se añade, en caso contrario, se actualiza su valor
+
+__Operadores de Update__
+
+| Nombre  | Descripcion |
+| ------------- | ------------- |
+| $set  | Actualiza el valor en el campo del documento  |
+| $unset  | Eleminar el valor en el campo del documento  |
+| $setOnInsert  | Actualiza el dato solo en caso de insertarlo, no en el caso de modificarlo si ya existiera  |
+| $inc  | Incrementa el valor del campo segun una especifica cantidad  |
+| $mul  | Multiplica el valor del campo segun una especifica cantidad   |
+| $rename  | Renombra el campo  |
+| $min  | Solo actualiza el campo si el valor especifico es menor que el valor del campo existente  |
+| $max  |  Solo actualiza el campo si el valor especifico es mayor que el valor del campo existente  |
+| $currentDate  | Mete la fecha actual como valor de campo  |
+
+__opcion upsert:true__
+
+Es necesario poner la opción upsert al valor true (por defecto, FALSE). De esta forma se actualizará, si existe, el documento y en caso contrario, se insertará
+
+```
+db.alumnos.update(
+{ “Edad": { $gte: 18 } },
+{ $set: { "mayorEdad": true }, $inc:{“Edad”:1} },
+{ upsert: true }
+)
+```
+
+## 3. Eliminar documentos
+
++ __Método deleteMany__
+
+Borra todos los documentos de una colección que satisfagan la condición:
+
+`db.alumnos.deleteMany ({“campus": “Móstoles})`
+
++ __Método remove__
+
+Borra los documentos de la colección, donde la clave “clave” sea igual al “valor”
+
+`db.colección.remove({“clave”:”valor”})`
+
+Borra todos los documentos de una colección
+
+`db.colección.remove({})`
+
+Tambien para borrar todos los documentos de una coleccion podemos usar 
+
+`db.colección.drop ()`
 

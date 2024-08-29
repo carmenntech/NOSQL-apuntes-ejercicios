@@ -2,11 +2,16 @@
 
  1- En la tabla __perfilesmongo__ selecionar a aquellos usuarios que no sean de Barcelona ni de Sevilla 
 
-´´´
+```
+db.perfilesmongo.find(
+  {"location" :
+    {$nin : ["Sevilla", "Barcelona"]}
+  }
+)
 
-´´´
+```
  
- 2- En la tabla __perfilesmongo__ selecionar a aquellos usuarios que tengan como jobtitle "Data Scientist"
+ 2- En la tabla __perfilesmongo__ selecionar el nombre de aquellos usuarios que tengan como jobtitle "Data Scientist"
  
 ´´´
 

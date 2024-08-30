@@ -45,9 +45,36 @@ db.perfilesmongo.find({
  4- En la tabla __Keywords__ buscar los documentos que tienen fecha posterior a '2024-08-12'
 
 ```
-
+db.keywords.find({ 
+  "fecha": { $gte: new Date("2024-08-12") } 
+})
 ```
 
+5 - En la tabla __perfilesmongo__ cuenta el numero de documentos que tengan jobtitle 'Data Scientist'
+
+```
+db.perfilesmongo.find({ 
+  "jobtitle": /Data Scientist/ } 
+).count()
+```
+
+6 - En la tabla __todoskeywords__ busca todos los titulos unicos
+
+```
+db.todosKeywords.distinct("title")
+```
+
+7 - EN la tabla __todosKeywords__ cuenta el numero de documentos que en su descripcion aparezca la pablabra python
+
+```
+db.todosKeywords.find({ 
+  "description": /python/ } 
+).count()
+```
+
+
+
+8 - En la tabla __itemsperfilmongo__ busca los documentos con menos de 20 items 
 
 Para hacer las consultas en Mongodb 
 

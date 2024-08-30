@@ -13,21 +13,40 @@ db.perfilesmongo.find(
  
  2- En la tabla __perfilesmongo__ selecionar el nombre de aquellos usuarios que tengan como jobtitle "Data Scientist"
  
-´´´
-
-´´´
+```
+db.perfilesmongo.find(
+  {"jobtitle" : /Data Scientist/
+  } , {_id:0, name:1}
+)
+```
  
  3- En la tabla __perfilesmongo__ selecionar a aquellos usuarios que se llamen "David" pero que se apelliden "Gil", además seleccionar a las personas que se apelliden "Fernandez" pero que no se llamen "Sergio"
 
-´´´
+```
+db.perfilesmongo.find({
+  $or: [
+    { 
+      $and: [
+        { "name": /David/ },
+        { "name": { $nin: [/Gil/] } }
+      ] 
+    },
+    { 
+      $and: [
+        { "name": /Fernandez/ },
+        { "name": { $nin: [/Sergio/] } }
+      ] 
+    }
+  ]
+})
 
-´´´
+```
 
  4- En la tabla __Keywords__ buscar los documentos que tienen fecha posterior a '2024-08-12'
 
-´´´
+```
 
-´´´
+```
 
 
 Para hacer las consultas en Mongodb 

@@ -72,9 +72,14 @@ db.todosKeywords.find({
 ).count()
 ```
 
-
-
 8 - En la tabla __itemsperfilmongo__ busca los documentos con menos de 20 items 
+
+```
+db.itemsperfilmongo.find({
+  $expr: { $lt: [{ $size: "$list_items" }, 20] }
+}).count()
+```
+
 
 Para hacer las consultas en Mongodb 
 

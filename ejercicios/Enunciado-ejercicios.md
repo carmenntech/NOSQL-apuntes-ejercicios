@@ -80,6 +80,11 @@ db.itemsperfilmongo.find({
 }).count()
 ```
 
+9 - En la tabla __perfilesmongo__ agrupa los campos por ciudad y cuenta cuantos hay por cara ciudad 
+
+```
+db.perfilesmongo.aggregate([ {$group: {_id:"$location", total:{$sum: 1 } }} ] )
+```
 
 Para hacer las consultas en Mongodb 
 

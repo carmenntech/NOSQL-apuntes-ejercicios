@@ -86,6 +86,28 @@ db.itemsperfilmongo.find({
 db.perfilesmongo.aggregate([ {$group: {_id:"$location", total:{$sum: 1 } }} ] )
 ```
 
+10 - Hacer left join de las tablas __perfilesmongobcn__ y __itemsmongo__ , después seleccionar aquellos que tengan el jobtitle de 'Data Scientist'
+
+```
+db.perfilesmongobarcelona.aggregate([
+  {
+    $match: {
+      "jobtitle": /.Data Scientist./
+    }
+  },
+  {
+    $lookup: {
+      from: "itemsperfilmongo",    // Nombre de la colección con la que se relacionará
+      localField: "urn_id",        // Campo en la colección 'perfilesmongobarcelona'
+      foreignField: "urn",         // Campo en la colección 'itemsperfilmongo'
+      as: "items"                  // Nombre del campo donde se almacenarán los documentos relacionados
+    }
+  }
+])
+```
+
+
+
 Para hacer las consultas en Mongodb 
 
 ![image](https://github.com/user-attachments/assets/83aee315-7b4d-40e6-a1cd-6e9ca339b28b)

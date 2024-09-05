@@ -86,7 +86,7 @@ db.itemsperfilmongo.find({
 db.perfilesmongo.aggregate([ {$group: {_id:"$location", total:{$sum: 1 } }} ] )
 ```
 
-10 - Hacer left join de las tablas __perfilesmongobcn__ y __itemsmongo__ , después seleccionar aquellos que tengan el jobtitle de 'Data Scientist'
+10 - Hacer left join de las tablas __perfilesmongobarcelona__ y __itemsperfilmongo__ , después seleccionar aquellos que tengan el jobtitle de 'Data Scientist'
 
 ```
 db.perfilesmongobarcelona.aggregate([
